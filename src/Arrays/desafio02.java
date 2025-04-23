@@ -1,30 +1,40 @@
 package Arrays;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class desafio01 {
+public class desafio02 {
+
     public static void main(String[] args) {
-
         ArrayList<String> nomes = new ArrayList<String>(); //lista para todos os nomes
         ArrayList<Integer> quantidade = new ArrayList<Integer>();
+
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> nomes_unicos = new ArrayList<String>(); //lista de nomes unicos
-
         String escolha;
         Integer contador_nome;
+        String palavra_normalizada = "teste";
+        long time = System.currentTimeMillis();
+        long future_time = (int) (time + 10);
 
         //Escolha do usuario
         do {
-            System.out.println("Digite um nome para a lista ou -1 para sair");
-            escolha = scanner.next().toLowerCase();
+            for (int i = Math.toIntExact(future_time); i < time ; i-=1) {
+                System.out.println("Digite um nome para a lista ou -1 para sair");
 
-            if(escolha.equals("-1")){
-                break;
+                escolha = scanner.next().toLowerCase();
+                palavra_normalizada = Normalizer.normalize(escolha, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+
+
+                if(palavra_normalizada.equals("-1")){
+                    break;
+                }
+                nomes.add(palavra_normalizada); //adicionando nome que o usuario digitou em nomes
+                System.out.println(i);
             }
-            nomes.add(escolha); //adiiconando nome que o usuario digitou em nomes
-        }while (!escolha.equals("-1")); //Enquanto o usuario não manda '-1'
+
+        }while(!palavra_normalizada.equals("-1")); //Enquanto o usuario não manda '-1'
 
 
         //for para percorrer a lista de nomes
@@ -46,7 +56,6 @@ public class desafio01 {
 
             //se for falso -> siginifica que nome ainda não foi encontrado
             if(!nome_contado){
-                //Percorre nomes
                 for(String nome: nomes){
                     if(nome.equals(nome_atual)){ //se nome for igual o nome atual
                         contador_nome+=1; //atribua mais um em contador_nome
@@ -62,4 +71,5 @@ public class desafio01 {
         System.out.println("Nomes digitados: "+ nomes_unicos);
         System.out.println("Quantidade digitadas:" + quantidade);
     }
+
 }

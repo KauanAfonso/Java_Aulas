@@ -7,8 +7,9 @@ import java.util.Scanner;
 public class Desafio {
     public static void main(String[] args) {
 
-        //valor total do produto vs qtd
+
         double valor_total = 0;
+        double valor_total_estoque = 0;
 
         //Arrays que serão utilizados par armazenar dados
         ArrayList<String> nomes = new ArrayList<>();
@@ -32,7 +33,7 @@ public class Desafio {
         //e addicionando cada informação em seu devido array
         for(int i = 1; i <= qtd_array_produtos; i++) {
 
-                System.out.println("Digite o nome do produto:");
+                System.out.println("Digite o nome do produto " + i);
                 nome_produto =  scanner.next();
                 nomes.add(nome_produto);
 
@@ -50,10 +51,13 @@ public class Desafio {
         for(int i = 0; i < qtd_array_produtos; i++) {
 
             valor_total = qtd.get(i) * preco.get(i); //valor total que pega quantidade e valor do produto
+            valor_total_estoque+=valor_total;
             System.out.printf("O nome do produto é %s, seu valor unitário é de %.2f e seu é quantidade %d e o valor total é de R$: %.2f\n", nomes.get(i), preco.get(i), qtd.get(i), valor_total);
 
 
         }
+
+        System.out.println("Valor total do estoque é de R$: " + valor_total_estoque);
 
     }
 }
