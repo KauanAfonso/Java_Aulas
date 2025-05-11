@@ -7,6 +7,7 @@ public class Veiculo {
         String nacionalidade;   
         boolean veiculo_ligado;
 
+        //construtora
         public Veiculo(String marca, int qtd_rodas, String nacionalidade) {
             this.marca = marca;
             this.qtd_rodas = qtd_rodas;
@@ -19,10 +20,11 @@ public class Veiculo {
             this.veiculo_ligado = true;
         }
 
+        //metodo para desligar
         public void desligar_veiculo(){
             this.veiculo_ligado = false;
         }
 
-        
+
 
 }
