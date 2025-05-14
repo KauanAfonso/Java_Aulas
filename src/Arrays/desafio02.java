@@ -9,14 +9,14 @@ public class desafio02 {
 
     public static void main(String[] args) {
         ArrayList<String> nomes = new ArrayList<String>(); //lista para todos os nomes
-        ArrayList<Integer> quantidade = new ArrayList<Integer>();
+        ArrayList<Integer> quantidade = new ArrayList<Integer>(); //quantidade de vezes na qual o nome foi enviado
         ArrayList<String> nomes_unicos = new ArrayList<String>(); //lista de nomes unicos
 
         Scanner scanner = new Scanner(System.in);
 
         String escolha;
         Integer contador_nome;
-        String palavra_normalizada = "teste";
+        String palavra_normalizada = "";
 
         ExecutorService executor = Executors.newSingleThreadExecutor(); //Rodar uma thread separada
 
@@ -24,12 +24,14 @@ public class desafio02 {
         //Escolha do usuario
         do {
                 try {
-                    System.out.println("Digite um nome para a lista ou -1 para sair, (voce tem 5 segundos)\n");
-                    Mostrar_tempo();
-                    Future<String> future = executor.submit(() -> scanner.next());
-                    escolha = future.get(1, TimeUnit.SECONDS).toLowerCase();
+                    System.out.println("\nDigite um nome para a lista ou -1 para sair, (voce tem 5 segundos)\n");
+                    Mostrar_tempo(); //chamando minha função
+
+                    Future<String> future = executor.submit(() -> scanner.next());//lança um scanner em uma thread separada
+                    escolha = future.get(1, TimeUnit.SECONDS).toLowerCase(); //tenta pegar o scanner digitado em 1 segundo
                     palavra_normalizada = Normalizer.normalize(escolha, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
 
+                    //usuario escolheu sair
                     if (palavra_normalizada.equals("-1")) {
                         break;
                     }
