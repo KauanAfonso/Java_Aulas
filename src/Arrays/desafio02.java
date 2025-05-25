@@ -8,8 +8,7 @@ import java.util.concurrent.*;
 public class desafio02 {
 
     public static void main(String[] args) {
-        ArrayList<String> todos_os_nomes = new ArrayList<>();
-        ArrayList<String> rodada_nomes = new ArrayList<>();
+        ArrayList<ArrayList<String>> rodadas = new ArrayList<>(); //variavel que recberá os nomes por rodadas
         Scanner scanner = new Scanner(System.in);
         String escolha;
         Integer contador_nome;
@@ -77,6 +76,7 @@ public class desafio02 {
                 }
             }
             System.out.println("Nomes digitados: " + nomes_unicos);
+            rodadas.add(new ArrayList<>(nomes_unicos)); // Salva os nomes únicos dessa rodada
             System.out.println("Quantidade digitadas:" + quantidade);
             System.out.println("Deseja jogar novamente? ");
             jogar_novamente = scanner.next();
@@ -84,7 +84,15 @@ public class desafio02 {
                 break;
             }
         }
+
+        //Printando nomes por rodada
+        System.out.println("\nResumo das rodadas:");
+        for (int i = 0; i < rodadas.size(); i++) {
+            System.out.println("Rodada " + (i + 1) + ": " + rodadas.get(i));
+        }
+
     }
+    
     //metodo para mostrar o tempo na tela
     public static void Mostrar_tempo(){
         for (int i = 5; i >0; i--) {
