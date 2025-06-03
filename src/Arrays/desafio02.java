@@ -24,26 +24,39 @@ public class desafio02 {
             //Escolha do usuario
             do {
                 try {
+
                     System.out.println("\nDigite um nome para a lista ou -1 para sair, (voce tem 5 segundos)\n");
                     //Mostrar_tempo(); //chamando minha função
-                    Future<String> future = executor.submit(() -> scanner.next());//lança um scanner em uma thread separada
+                    Future<String> future = executor.submit(() -> {
+                        if (scanner.hasNextLine()){
+                            return scanner.nextLine();//lança um scanner em uma thread separada
+                        }
+                        return null;
+                    });
                     escolha = future.get(5, TimeUnit.SECONDS).toLowerCase(); //tenta pegar o scanner digitado em 1 segundo
-                    palavra_normalizada = Normalizer.normalize(escolha, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+                    if (escolha == null) {
+                        palavra_normalizada = "";
+                    } else {
+                        palavra_normalizada = Normalizer.normalize(escolha, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
+                    }
 
-                    //usuario escolheu sair
                     if (palavra_normalizada.equals("-1")) {
                         break;
                     }
 
-                    nomes.add(palavra_normalizada); //adicionando nome que o usuario digitou em nome
-                } catch (TimeoutException e) {
+                    //usuario escolheu sair
+                    if (!palavra_normalizada.isEmpty()) {
+                        nomes.add(palavra_normalizada);
+                    }
+
+                } catch (TimeoutException e){
                     System.out.println("\n\nTEMPO ESGOTADOOOOOOOO!!!!!!!\n");
                     System.out.println("Programa finalizado...");
+                    jogar_novamente = "N"; // Força encerramento do jogo
                     break;
                 } catch (Exception e) {
                     System.out.println("Algum erro: " + e.getMessage());
                 }
-
             } while (!palavra_normalizada.equals("-1")); //Enquanto o usuario não manda '-1'
 
             //for para percorrer a lista de nomes
@@ -72,19 +85,25 @@ public class desafio02 {
                     quantidade.add(contador_nome); //adiciona a quantidade do nome_atual à quantidade
                     nomes_unicos.add(nome_atual); // add o nome atual a nomes_unicos
 
-
                 }
             }
             System.out.println("Nomes digitados: " + nomes_unicos);
             rodadas.add(new ArrayList<>(nomes_unicos)); // Salva os nomes únicos dessa rodada
             System.out.println("Quantidade digitadas:" + quantidade);
-            System.out.println("Deseja jogar novamente? ");
-            jogar_novamente = scanner.next();
-            if(jogar_novamente.equals("N")){
-                break;
+
+            // Pergunta se quer jogar novamente, só se não houve timeout
+            if (!jogar_novamente.equalsIgnoreCase("N")) {
+                System.out.println("Deseja jogar novamente? (S/N)");
+
+                if (scanner.hasNextLine()) {
+                    jogar_novamente = scanner.nextLine().trim().toUpperCase();
+                } else {
+                    jogar_novamente = "N"; // Encerra se não houver mais entrada
+                }
             }
         }
-
+        scanner.close();
+        executor.shutdownNow();
         //Printando nomes por rodada
         System.out.println("\nResumo das rodadas:");
         for (int i = 0; i < rodadas.size(); i++) {
