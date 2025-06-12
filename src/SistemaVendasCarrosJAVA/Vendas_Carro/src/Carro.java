@@ -25,7 +25,7 @@ public class Carro extends Veiculo implements Vendavel{
         System.out.println("Preco: R$" + preco);
     }
     @Override
-    public void Vender(){
+    public void vender(){
         LocalDateTime agora = LocalDateTime.now();
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy  HH:mm:ss");
 
